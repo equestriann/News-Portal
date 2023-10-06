@@ -28,7 +28,7 @@ class Author(models.Model):
         self.save()
 
 class Category(models.Model):
-    """ Категории новостэй/статей — темы, которые они отражают (спорт, политика, образование и т. д.). """
+    """ Категории новостей/статей — темы, которые они отражают (спорт, политика, образование и т. д.). """
 
     # Категории новостей/статей
     name = models.CharField(max_length=255,
@@ -52,8 +52,8 @@ class Post(models.Model):
 
     # Поле с выбором — «статья» или «новость»
     type = models.CharField(max_length=3,
-                                 choices=POSTS,
-                                 default=article)
+                            choices=POSTS,
+                            default=article)
 
     # Автоматически добавляемая дата и время создания
     creation_time = models.DateTimeField(auto_now_add=True)
@@ -80,6 +80,11 @@ class Post(models.Model):
         self.rating -= 1
         self.save()
 
+    # Метод preview, который возвращает начало статьи (предварительный просмотр)
+    # длиной 124 символа и добавляет многоточие в конце
+    def preview(self):
+        return self.text[:124] + '...'
+
 class Comment(models.Model):
     """ Под каждой новостью/статьёй можно оставлять комментарии,
     поэтому необходимо организовать их способ хранения тоже."""
@@ -88,7 +93,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
 
     # Связь «один ко многим» с моделью Post
-    post = models.OneToOneField(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     # Текст комментария
     text = models.TextField()
