@@ -85,6 +85,9 @@ class Post(models.Model):
     def preview(self):
         return self.text[:124] + '...'
 
+    def __str__(self):
+        return f"{self.title} {self.text}"
+
 class Comment(models.Model):
     """ Под каждой новостью/статьёй можно оставлять комментарии,
     поэтому необходимо организовать их способ хранения тоже."""

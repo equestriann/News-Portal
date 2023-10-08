@@ -43,6 +43,8 @@ INSTALLED_APPS = [
 
     'news',
     'accounts',
+
+    'simpleapp',
 ]
 
 SITE_ID = 1
@@ -64,7 +66,7 @@ ROOT_URLCONF = 'NewsPaper.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'simpleapp')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,5 +135,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static"
+    BASE_DIR / "static",
 ]
