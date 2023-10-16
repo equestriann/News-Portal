@@ -11,7 +11,7 @@ posts
     <h3>Всего: {{ news_all | length }}</h3>
     <hr>
     {% if news_all %}
-        <table align="center" cellpadding="5">
+        <table align="center" cellpadding="10">
             <tr>
                 <td>Заголовок</td>
                 <td>Дата</td>
@@ -22,7 +22,7 @@ posts
             <tr>
                 <td><b>{{ news.title }}</b></td>
                 <td>{{ news.creation_time|date:'d M Y' }}</td>
-                <td>{{ news.text|truncatewords:5 }}</td>
+                <td>{{ news.text|truncatechars:20 }}</td>
             </tr>
             {% endfor %}
 
