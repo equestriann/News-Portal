@@ -8,7 +8,7 @@ class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = Post
     # Поле, которое будет использоваться для сортировки объектов
-    ordering = '-rating'
+    ordering = '-creation_time'
     # Указываем имя шаблона, в котором будут все инструкции о том,
     # как именно пользователю должны быть показаны наши объекты
     template_name = 'news_all.html'
@@ -34,11 +34,13 @@ class PostList(ListView):
 class PostDetail(DetailView):
     # Модель всё та же, но мы хотим получать информацию по отдельному товару
     model = Post
-    # Используем другой шаблон — product.html
+    # Используем другой шаблон
     template_name = 'news_one.html'
     # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'news'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['time'] = datetime.utcnow()
+        # title = context['title']
+        # content = context['text']
+        return context
