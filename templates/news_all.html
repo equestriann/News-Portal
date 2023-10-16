@@ -7,6 +7,27 @@ posts
 
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
-<h1>Все публикации</h1>
-{{ news_all }}
+    <h1>Все публикации</h1>
+    <h3>Всего: {{ news_all | length }}</h3>
+    <hr>
+    {% if news_all %}
+        <table align="center" cellpadding="5">
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата</td>
+                <td>Текст</td>
+            </tr>
+
+            {% for news in news_all %}
+            <tr>
+                <td><b>{{ news.title }}</b></td>
+                <td>{{ news.creation_time|date:'d M Y' }}</td>
+                <td>{{ news.text|truncatewords:5 }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+            <h3>Публикаций нет!</h3>
+    {% endif %}
 {% endblock content %}
