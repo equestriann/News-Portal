@@ -1,44 +1,63 @@
 {% extends 'flatpages/default.html' %}
 
-{% load custom_filter %}
-<!-- Подключаем новый файл с нашим тегом -->
-{% load custom_tags %}
-
-{% block title %}
-Products
-{% endblock title %}
+{% block title %} Product list {% endblock title %}
 
 {% block content %}
-   <h1>Все товары</h1>
-   <!-- Вот так выглядело использование переменной и фильтра -->
-   <!-- <h3>{{ time_now|date:'M d Y' }}</h3> -->
-   <!-- А вот так мы используем наш тег-->
-   <h3>{% current_time '%b %d %Y' %}</h3>
-   <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о распродаже!" }} </h3>
+<table>
+    <thead>
+        <th>
+            Name
+        </th>
+        <th>
+            Category
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Quantity
+        </th>
+    </thead>
+    {% for product in products %}
+    <tr>
+        <td>
+            {{ product.name|title }}
+        </td>
+        <td>
+            {{ product.category.name|title }}
+        </td>
+        <td>
+            {{ product.price }}
+        </td>
+        <td>
+            {{ product.quantity }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<!-- Проверяем, что поддерживается постраничный вывод -->
+{% if is_paginated %}
 
-   <hr>
-   {% if products %}
-       <table>
-           <tr>
-               <td>Название</td>
-               <td>Описание</td>
-               <td>Категория</td>
-               <td>Цена</td>
-               <td>Количество</td>
-           </tr>
+    <!-- Если доступна предыдущая страница, то даём ссылку на неё и самую первую страницу -->
+    {% if page_obj.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
+    {% endif %}
 
-           {% for product in products %}
-           <tr>
-               <td>{{ product.name }}</td>
-               <td>{{ product.description|truncatewords:2 }}</td>
-               <td>{{ product.category.name }}</td>
-               <td>{{ product.price|currency:"usd" }}</td>
-               <td>{{ product.quantity }}</td>
-           </tr>
-           {% endfor %}
+    <!-- Показываем только текущую страницу и ближайшие к ней, чтобы список не тянулся и не захламлял страницу -->
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <a>{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
 
-       </table>
-   {% else %}
-       <h2>Товаров нет!</h2>
-   {% endif %}
+    <!-- Если есть следующая страница, то даём ссылку на неё и на самую последнюю страницу -->
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">>>></a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+
+{% endif %}
 {% endblock content %}
