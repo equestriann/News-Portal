@@ -1,6 +1,6 @@
 from django.urls import path
 # Импортируем созданные нами представления
-from .views import PostList, PostDetail, Posts
+from .views import PostList, PostDetail, PostSearch
 
 urlpatterns = [
    # path — означает путь.
@@ -10,5 +10,5 @@ urlpatterns = [
    # Для этого вызываем метод as_view.
    path('', PostList.as_view()),
    path('<int:pk>', PostDetail.as_view()),
-   path('search/', Posts.as_view()),
+   path('search/', PostSearch.as_view()),
 ]

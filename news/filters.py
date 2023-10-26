@@ -1,8 +1,8 @@
-from django_filters import FilterSet, DateRangeFilter
+from django_filters import FilterSet, DateFilter
 from .models import Post
 
 class PostFilter(FilterSet):
-    creation_time = DateRangeFilter
+    creation_time = DateFilter
 
     class Meta:
         model = Post

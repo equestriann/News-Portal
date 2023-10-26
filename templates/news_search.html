@@ -10,21 +10,21 @@ posts
     {{ filter.form }} <!-- Форму от фильтров за нас сделает Django. А вот кнопку, увы придётся делать самому -->
     <input type="submit" value="Найти">
 </form>
-    {% if news_all %}
+    {% if posts %}
         <table align="center" cellpadding="4">
 
-            <tr>
-                <td>Заголовок</td>
-                <td>Дата</td>
-                <td>Текст</td>
-            </tr>
+<!--            <tr>-->
+<!--                <td>Заголовок</td>-->
+<!--                <td>Дата</td>-->
+<!--                <td>Текст</td>-->
+<!--            </tr>-->
 
-            {% for news in filter.qs %}
+            {% for posts in filter.qs %}
 
             <tr>
-                <td width="300"><b>{{ news.title }}</b></td>
-                <td width="100">{{ news.creation_time|date:'d M Y' }}</td>
-                <td width="250">{{ news.text|truncatechars:20 }}</td>
+                <td width="300"><b>{{ posts.title }}</b></td>
+                <td width="100">{{ posts.creation_time|date:'d M Y' }}</td>
+                <td width="250">{{ posts.text|truncatechars:20 }}</td>
             </tr>
             {% endfor %}
 
