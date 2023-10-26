@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'accounts',
 
     'simpleapp',
+
+    'django_filters',
 ]
 
 SITE_ID = 1
