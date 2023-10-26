@@ -56,7 +56,7 @@ class Post(models.Model):
                             default=article)
 
     # Автоматически добавляемая дата и время создания
-    creation_time = models.DateTimeField(auto_now_add=True)
+    creation_time = models.DateField(auto_now_add=True)
 
     # Cвязь «многие ко многим» с моделью Category
     title = models.CharField(max_length=255)
