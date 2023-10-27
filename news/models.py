@@ -16,7 +16,6 @@ class Author(models.Model):
         verbose_name = 'Автор'
         verbose_name_plural = 'Авторы'
 
-
     # Метод update_rating(), который обновляет рейтинг пользователя, переданный в аргумент этого метода
     def update_rating(self):
 
