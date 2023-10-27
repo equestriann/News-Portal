@@ -12,6 +12,11 @@ class Author(models.Model):
     # Рейтинг пользователя
     rating = models.IntegerField(default=0)
 
+    class Meta:
+        verbose_name = 'Автор'
+        verbose_name_plural = 'Авторы'
+
+
     # Метод update_rating(), который обновляет рейтинг пользователя, переданный в аргумент этого метода
     def update_rating(self):
 
@@ -33,6 +38,10 @@ class Category(models.Model):
     # Категории новостей/статей
     name = models.CharField(max_length=255,
                             unique=True)
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
 class Post(models.Model):
     """ Эта модель должна содержать в себе статьи и новости, которые создают пользователи.
@@ -70,6 +79,10 @@ class Post(models.Model):
     # Рейтинг статьи/новости
     category = models.ManyToManyField(Category, through='PostCategory')
 
+    class Meta:
+        verbose_name = 'Публикация'
+        verbose_name_plural = 'Публикации'
+
     # Метод like, который увеличивает рейтинг поста на единицу
     def like(self):
         self.rating += 1
@@ -106,6 +119,10 @@ class Comment(models.Model):
 
     # Рейтинг комментария
     rating = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
 
     # Метод like, который увеличивает рейтинг комментария на единицу
     def like(self):

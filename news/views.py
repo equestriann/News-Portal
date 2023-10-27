@@ -14,7 +14,7 @@ from .forms import PostForm
 class PostList(ListView):
     model = Post
     ordering = '-creation_time'
-    template_name = 'news_all.html'
+    template_name = 'news_app/news_list.html'
     context_object_name = 'news_all'
     paginate_by = 1
     form_class = PostForm
@@ -36,7 +36,7 @@ class PostList(ListView):
 class PostSearch(ListView):
     model = Post
     ordering = '-creation_time'
-    template_name = 'news_search.html'
+    template_name = 'news_app/news_search.html'
     context_object_name = 'posts'
     paginate_by = 1
 
@@ -47,7 +47,7 @@ class PostSearch(ListView):
 
 class PostDetail(DetailView):
     model = Post
-    template_name = 'news_one.html'
+    template_name = 'news_app/news_extended.html'
     context_object_name = 'news'
 
     def get_context_data(self, **kwargs):
@@ -64,4 +64,4 @@ class Posts(View):
         data = {
             'posts': posts,
         }
-        return render(request, 'news_search.html', data)
+        return render(request, 'news_app/news_search.html', data)
