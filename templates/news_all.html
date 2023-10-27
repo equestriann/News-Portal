@@ -7,7 +7,7 @@ posts
 
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
-    <h2>Публикации</h2>
+    <h2>Главная страница</h2>
     <hr>
     {% if news_all %}
         <table align="center" cellpadding="4">
@@ -53,4 +53,13 @@ posts
     {% endif %}
 
 {% endif %}
+
+<hr>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form }} <!-- Теперь нам нужна только готовая форма и кнопка -->
+    <input type="submit" value="Добавить товар">
+</form>
+
 {% endblock content %}

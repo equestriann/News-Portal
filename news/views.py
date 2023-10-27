@@ -9,6 +9,7 @@ from django.shortcuts import render
 
 from .models import Post
 from .filters import PostFilter
+from .forms import PostForm
 
 class PostList(ListView):
     model = Post
@@ -16,11 +17,21 @@ class PostList(ListView):
     template_name = 'news_all.html'
     context_object_name = 'news_all'
     paginate_by = 1
+    form_class = PostForm
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Post.objects.all()
+        context['form'] = PostForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+        return super().get(request, *args, **kwargs)
 
 class PostSearch(ListView):
     model = Post
