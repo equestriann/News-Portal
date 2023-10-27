@@ -9,7 +9,7 @@ class PostFilter(FilterSet):
         widget=forms.DateInput(format='%d %M %Y',
                                attrs={'type': 'date'}),
         field_name='creation_time',
-        lookup_expr='creation_time__gte',
+        lookup_expr='date__gte',
         label = 'Позже этой даты:',
     )
 
@@ -17,5 +17,4 @@ class PostFilter(FilterSet):
         model = Post
         fields = {
             'author__user': ['exact'],
-            'title': ['icontains'],
         }

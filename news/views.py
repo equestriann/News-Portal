@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.core.paginator import Paginator
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from django.views import View
 
 from django.shortcuts import render
@@ -47,14 +47,16 @@ class PostSearch(ListView):
 
 class PostDetail(DetailView):
     model = Post
-    template_name = 'news_app/news_extended.html'
+    template_name = 'news_app/news_detail.html'
     context_object_name = 'news'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # title = context['title']
-        # content = context['text']
-        return context
+    # def get_context_data(self, **kwargs):
+    #     template_name = 'news_app/news_detail.html'
+    #     queryset = Post.objects.all()
+
+class PostCreate(CreateView):
+    template_name = 'news_app/news_create.html'
+    form_class = PostForm
 
 class Posts(View):
     def get(self, request):

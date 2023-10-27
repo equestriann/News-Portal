@@ -1,8 +1,9 @@
-from django.forms import Form, CharField, EmailField, IntegerField
+from django.forms import ModelForm
 from .models import Post
 
 
-class PostForm(Form):
-    email = EmailField()
-    text = CharField()
-    number = IntegerField()
+class PostForm(ModelForm):
+
+    class Meta:
+        model = Post
+        fields = ['author', 'type', 'title', 'text']

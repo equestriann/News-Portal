@@ -64,7 +64,7 @@ class Post(models.Model):
                             default=article)
 
     # Автоматически добавляемая дата и время создания
-    creation_time = models.DateField(auto_now_add=True)
+    creation_time = models.DateTimeField(auto_now_add=True)
 
     # Cвязь «многие ко многим» с моделью Category
     title = models.CharField(max_length=255)
@@ -99,6 +99,9 @@ class Post(models.Model):
 
     def __str__(self):
         return f"{self.title} {self.text}"
+
+    def get_absolute_url(self):
+        return f'/news/{self.id}'
 
 class Comment(models.Model):
     """ Под каждой новостью/статьёй можно оставлять комментарии,
