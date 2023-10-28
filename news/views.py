@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.core.paginator import Paginator
 
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
 
 from django.shortcuts import render
@@ -50,13 +50,22 @@ class PostDetail(DetailView):
     template_name = 'news_app/news_detail.html'
     context_object_name = 'news'
 
-    # def get_context_data(self, **kwargs):
-    #     template_name = 'news_app/news_detail.html'
-    #     queryset = Post.objects.all()
-
 class PostCreate(CreateView):
     template_name = 'news_app/news_create.html'
     form_class = PostForm
+
+class PostUpdate(UpdateView):
+    template_name = 'news_app/news_create.html'
+    form_class = PostForm
+
+    def get_object(self, **kwargs):
+        id_ = self.kwargs.get('pk')
+        return Post.objects.get(pk=id_)
+
+class PostDelete(DeleteView):
+    template_name = 'news_app/news_delete.html'
+    queryset = Post.objects.all()
+    success_url = '/news/'
 
 class Posts(View):
     def get(self, request):

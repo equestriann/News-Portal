@@ -11,18 +11,16 @@ posts
     <hr>
     {% if news_all %}
         <table align="center" cellpadding="4">
-<!--            <tr>-->
-<!--                <td>Заголовок</td>-->
-<!--                <td>Дата</td>-->
-<!--                <td>Текст</td>-->
-<!--            </tr>-->
 
             {% for news in news_all %}
             <tr>
-                <td width="300"><b>{{ news.title }}</b></td>
+                <td width="300"><a href="{% url 'post_detail' news.id %}"><b>{{ news.title }}</b></a>
                 <td width="100">{{ news.creation_time|date:'d M Y' }}</td>
                 <td width="250">{{ news.text|truncatechars:20 }}</td>
+                <td width="100"><a href="{% url 'post_update' news.id %}"><u> Редактировать </u></a>
+                <td width="100"><a href="{% url 'post_delete' news.id %}"><u> Удалить </u></a>
             </tr>
+
             {% endfor %}
 
         </table>

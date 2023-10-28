@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'flatpages/default.html' %}
 
-</body>
-</html>
+{% block title %}
+{{ news.title }}
+{% endblock title %}
+
+{% block content %}
+    <h2>Вы действительно хотите удалить публикацию?</h2>
+    <h3><b>{{ post.title }}</b></h3>
+    <h4>{{ post.creation_time|date:'d M Y'}}</h4>
+    {{ post.text }}
+
+<form method="Post">
+    {% csrf_token %}
+    <input type="submit" value="Подтвердить">
+</form>
+{% endblock content %}
