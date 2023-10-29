@@ -11,6 +11,8 @@ from .models import Post
 from .filters import PostFilter
 from .forms import PostForm
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 class PostList(ListView):
     model = Post
     ordering = '-creation_time'
@@ -54,7 +56,10 @@ class PostCreate(CreateView):
     template_name = 'news_app/news_create.html'
     form_class = PostForm
 
-class PostUpdate(UpdateView):
+# @method_decorator(login_required(login_url='/login/'), name='dispatch')
+class PostUpdate(LoginRequiredMixin, UpdateView):
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
     template_name = 'news_app/news_create.html'
     form_class = PostForm
 
