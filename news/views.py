@@ -11,7 +11,7 @@ from .models import Post
 from .filters import PostFilter
 from .forms import PostForm
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 class PostList(ListView):
     model = Post
@@ -52,16 +52,17 @@ class PostDetail(DetailView):
     template_name = 'news_app/news_detail.html'
     context_object_name = 'news'
 
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
     template_name = 'news_app/news_create.html'
     form_class = PostForm
+    permission_required = ('news.create_post')
 
-# @method_decorator(login_required(login_url='/login/'), name='dispatch')
-class PostUpdate(LoginRequiredMixin, UpdateView):
-    login_url = '/login/'
+class PostUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    login_url = '/'
     redirect_field_name = 'redirect_to'
     template_name = 'news_app/news_create.html'
     form_class = PostForm
+    permission_required = ('news.update_post')
 
     def get_object(self, **kwargs):
         id_ = self.kwargs.get('pk')
