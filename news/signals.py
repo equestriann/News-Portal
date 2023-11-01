@@ -6,12 +6,14 @@ from django.core.mail import EmailMultiAlternatives
 from .models import PostCategory
 from NewsPaper import settings
 
-def send_notifications(preview, pk, title, subscribers):
+def send_notifications(preview, pk, title, subscribers_email, subscribers_username):
+
     html_content = render_to_string(
         'post_email_create.html',
         {
             'preview' : preview,
-            'link' : f'{settings.SITE_URL}news/{pk}'
+            'link' : f'{settings.SITE_URL}/news/{pk}',
+            'username' : subscribers_username
         }
     )
 
@@ -19,7 +21,7 @@ def send_notifications(preview, pk, title, subscribers):
         subject=title,
         body='',
         from_email=settings.DEFAULT_FROM_EMAIL,
-        to=subscribers,
+        to=subscribers_email,
     )
 
     message.attach_alternative(html_content, 'text/html')
@@ -33,4 +35,9 @@ def notify_about_new_posts(sender, instance, **kwargs):
         for category in categories:
             subscribers += category.subscribers.all()
 
-        send_notifications(instance.preview(), instance.pk, instance.title, subscribers)
+        subscribers_email = [s.email for s in subscribers]
+
+        for s in subscribers:
+            subscribers_username = s.username
+
+        send_notifications(instance.preview(), instance.pk, instance.title, subscribers_email, subscribers_username)
