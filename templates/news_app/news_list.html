@@ -5,25 +5,29 @@ posts
 {% endblock title %}
 
 {% block content %}
-    <h2>Главная страница</h2>
-    <hr>
-    {% if news_all %}
-        <table align="center" cellpadding="4">
-
-            {% for news in news_all %}
-            <tr>
-                <td width="300"><a href="{% url 'post_detail' news.id %}"><b>{{ news.title }}</b></a>
-                <td width="110">{{ news.creation_time|date:'d M Y' }}</td>
-                <td width="200">{{ news.text|truncatechars:20 }}</td>
-                <td width="50"><a href="{% url 'post_update' news.id %}"><u> Редактировать </u></a>
-                <td width="50"><a href="{% url 'post_delete' news.id %}"><u> Удалить </u></a>
-            </tr>
+<h2>Главная страница</h2>
+<hr>
+{% if news_all %}
+<ul class="list group list-group-flush">
+  {% for news in news_all %}
+      <li class="list-group-item">
+        <small class="fw-bold">{{ news.creation_time|date:'d M Y' }}</small>
+        <a href="{% url 'post_detail' news.id %}">{{ news.title }}</a>
+        <small class="fw-bold"> Категории:
+            {% for category in news.category.all %}
+                <a href="{% url 'category_list' category.id %}">{{ category }}</a>
             {% endfor %}
+        </small>
+        <p>{{ news.text|truncatechars:20 }}</p>
+        <small class="text-muted"><a href="{% url 'post_update' news.id %}">Редактировать</a></small>
+        <small class="text-muted"><a href="{% url 'post_delete' news.id %}">Удалить</a></small>
+      </li>
+  {% endfor %}
+</ul>
 
-        </table>
     {% else %}
             <h3>Публикаций нет!</h3>
-    {% endif %}
+{% endif %}
 
 {% if is_paginated %}
 

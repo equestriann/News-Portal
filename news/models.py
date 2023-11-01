@@ -31,6 +31,9 @@ class Author(models.Model):
         self.rating = author_posts_rating * 3 + author_comments_rating + author_posts_comments_rating
         self.save()
 
+    def __str__(self):
+        return f"{self.user.username}"
+
 class Category(models.Model):
     """ Категории новостей/статей — темы, которые они отражают (спорт, политика, образование и т. д.). """
 
@@ -38,9 +41,15 @@ class Category(models.Model):
     name = models.CharField(max_length=255,
                             unique=True)
 
+    subcribers = models.ManyToManyField(User,
+                                        related_name='categories')
+
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+
+    def __str__(self):
+        return self.name
 
 class Post(models.Model):
     """ Эта модель должна содержать в себе статьи и новости, которые создают пользователи.
@@ -98,7 +107,7 @@ class Post(models.Model):
         return self.text[:124] + '...'
 
     def __str__(self):
-        return f"{self.title} {self.text}"
+        return f"{self.title}"
 
     def get_absolute_url(self):
         return f'/news/{self.id}'
@@ -144,3 +153,10 @@ class PostCategory(models.Model):
 
     # Связь «один ко многим» с моделью Category
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.post}: {self.category}'
+
+    class Meta:
+        verbose_name = 'Промежуточная модель PostCategory'
+        verbose_name_plural = 'Промежуточная модель PostCategories'

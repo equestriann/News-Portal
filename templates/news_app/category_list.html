@@ -1,0 +1,59 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+<h2>Категория: {{ category }}</h2>
+    {% if is_not_subscribed %}
+        <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a>
+    {% endif %}
+<hr>
+<!--{% if news_all %}-->
+<ul class="list group list-group-flush">
+  {% for news in category_news_list %}
+      <li class="list-group-item">
+        <small class="fw-bold">{{ news.creation_time|date:'d M Y' }}
+        </small>
+        <a href="{% url 'post_detail' news.id %}">{{ news.title }}</a>
+        <small class="fw-bold"> Категории:
+            {% for category in news.category.all %}
+                <a href="{% url 'category_list' category.id %}">{{ category }}</a>
+            {% endfor %}
+        </small>
+        <p>{{ news.text|truncatechars:20 }}</p>
+        <small class="text-muted"><a href="{% url 'post_update' news.id %}">Редактировать</a></small>
+        <small class="text-muted"><a href="{% url 'post_delete' news.id %}">Удалить</a></small>
+      </li>
+  {% endfor %}
+</ul>
+
+<!--    {% else %}-->
+<!--            <h3>Публикаций нет!</h3>-->
+<!--{% endif %}-->
+
+<!--{% if is_paginated %}-->
+
+<!--    {% if page_obj.has_previous %}-->
+<!--        <a href="?page=1">Первая</a>-->
+<!--        <a href="?page={{ page_obj.previous_page_number }}">←</a>-->
+<!--    {% endif %}-->
+
+<!--    {% for num in page_obj.paginator.page_range %}-->
+<!--        {% if page_obj.number == num %}-->
+<!--            <a>{{ num }}</a>-->
+<!--        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}-->
+<!--            <a href="?page={{ num }}">{{ num }}</a>-->
+<!--        {% endif %}-->
+<!--    {% endfor %}-->
+
+<!--    {% if page_obj.has_next %}-->
+<!--        <a href="?page={{ page_obj.next_page_number }}">→</a>-->
+<!--        <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>-->
+<!--    {% endif %}-->
+
+<!--{% endif %}-->
+<!--<hr>-->
+<!--<a href="{% url 'post_create' %}">Добавить новую публикацию</a> <br>-->
+{% endblock content %}

@@ -1,13 +1,14 @@
 from datetime import datetime
+from typing import Dict, Any
 
 from django.core.paginator import Paginator
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
-from .models import Post
+from .models import Post, Category
 from .filters import PostFilter
 from .forms import PostForm
 
@@ -15,7 +16,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 
 class PostList(ListView):
     model = Post
-    ordering = '-creation_time'
+    ordering = 'creation_time'
     template_name = 'news_app/news_list.html'
     context_object_name = 'news_all'
     paginate_by = 1
@@ -23,8 +24,9 @@ class PostList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.all()
+        context['news'] = Post.objects.all()
         context['form'] = PostForm()
+        context['category'] = Post.category
         return context
 
     def post(self, request, *args, **kwargs):
@@ -82,3 +84,28 @@ class Posts(View):
             'posts': posts,
         }
         return render(request, 'news_app/news_search.html', data)
+
+class CategoryList(ListView):
+    model = Post
+    template_name = 'news_app/category_list.html'
+    context_object_name = 'category_news_list'
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id=self.kwargs['pk'])
+        queryset = Post.objects.filter(category=self.category).order_by('creation_time')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscribed'] = self.request.user not in self.category.subcribers.all()
+        context['category'] = self.category
+        context['news'] = Post.objects.all()
+        return context
+
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subcribers.add(user)
+
+    message = "Теперь вы подписаны на категорию"
+    return render(request, 'news_app/subscribe.html', {'category': category, 'message': message})
