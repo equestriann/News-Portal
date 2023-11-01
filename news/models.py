@@ -41,8 +41,8 @@ class Category(models.Model):
     name = models.CharField(max_length=255,
                             unique=True)
 
-    subcribers = models.ManyToManyField(User,
-                                        related_name='categories')
+    subscribers = models.ManyToManyField(User,
+                                         related_name='categories')
 
     class Meta:
         verbose_name = 'Категория'

@@ -97,7 +97,7 @@ class CategoryList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_not_subscribed'] = self.request.user not in self.category.subcribers.all()
+        context['is_not_subscribed'] = self.request.user not in self.category.subscribers.all()
         context['category'] = self.category
         context['news'] = Post.objects.all()
         return context
@@ -105,7 +105,7 @@ class CategoryList(ListView):
 def subscribe(request, pk):
     user = request.user
     category = Category.objects.get(id=pk)
-    category.subcribers.add(user)
+    category.subscribers.add(user)
 
     message = "Теперь вы подписаны на категорию"
     return render(request, 'news_app/subscribe.html', {'category': category, 'message': message})

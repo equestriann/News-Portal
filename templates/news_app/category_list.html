@@ -10,7 +10,7 @@ Posts
         <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a>
     {% endif %}
 <hr>
-<!--{% if news_all %}-->
+{% if category_news_list %}
 <ul class="list group list-group-flush">
   {% for news in category_news_list %}
       <li class="list-group-item">
@@ -29,9 +29,9 @@ Posts
   {% endfor %}
 </ul>
 
-<!--    {% else %}-->
-<!--            <h3>Публикаций нет!</h3>-->
-<!--{% endif %}-->
+    {% else %}
+            <h3>Публикаций нет!</h3>
+{% endif %}
 
 <!--{% if is_paginated %}-->
 

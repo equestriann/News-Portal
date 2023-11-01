@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
 
-    'news',
+    'news.apps.NewsConfig',
     'accounts',
     'simpleapp',
     'sign',
@@ -166,3 +166,12 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 ACCOUNT_FORMS = {'signup': 'sign.models.CommonSignupForm'}
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'your.NewsPortal'
+EMAIL_HOST_PASSWORD = 'kkbkzfifirttspen'
+# EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'your.NewsPortal@yandex.ru'
+
+SITE_URL = 'http://127.0.0.1:8000/'
