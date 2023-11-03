@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+
+    'django_apscheduler'
 ]
 
 SITE_ID = 1
@@ -175,3 +177,7 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'your.NewsPortal@yandex.ru'
 
 SITE_URL = 'http://127.0.0.1:8000'
+
+APPSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
+
+APPSCHEDULER_RUN_NOW_TIMEOUT = 10

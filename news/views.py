@@ -1,3 +1,5 @@
+import datetime
+
 from datetime import datetime
 from typing import Dict, Any
 
@@ -58,6 +60,17 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     template_name = 'news_app/news_create.html'
     form_class = PostForm
     permission_required = ('news.create_post')
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        form.instance.author = self.request.user.author
+        today = datetime.now()
+        limit = today - datetime.timedelta(days=1)
+        count = Post.objects.filter(author=post.author, creation_time__gte=limit).count()
+        if count >= 3:
+            return render(self.request, 'post_create_restrict.html')
+        post.save()
+        return super().form_valid(form)
 
 class PostUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     login_url = '/'
