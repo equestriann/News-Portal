@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 
 from news.models import Post
+from news.models import Category
 
 logger = logging.getLogger(__name__)
 
@@ -19,14 +20,14 @@ logger = logging.getLogger(__name__)
 def my_job():
 
     today = datetime.datetime.now()
-    last_week = datetime.timedelta(days=7)
+    last_week = today - datetime.timedelta(days=7)
     posts = Post.objects.filter(creation_time__gte=last_week)
     categories = set(posts.values_list('category__name', flat=True))
-    subscibers = Category.objects.filter(name__in=categories).values_list('subscribers.email', flat=True)
+    subscibers = Category.objects.filter(name__in=categories).values_list('subscribers__email', flat=True)
     html_content = render_to_string(
         'daily_post.html',
         {
-            'link' : settings.SITE_UTL,
+            'link' : settings.SITE_URL,
             'posts' : posts,
         }
     )
