@@ -1,6 +1,6 @@
 import datetime
 
-from datetime import datetime
+# from datetime import datetime
 from typing import Dict, Any
 
 from django.core.paginator import Paginator
@@ -15,6 +15,8 @@ from .filters import PostFilter
 from .forms import PostForm
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
+from django.http import HttpResponse
 
 class PostList(ListView):
     model = Post
@@ -63,8 +65,8 @@ class PostCreate(PermissionRequiredMixin, CreateView):
 
     def form_valid(self, form):
         post = form.save(commit=False)
-        form.instance.author = self.request.user.author
-        today = datetime.now()
+        # form.instance.author = self.request.user.username
+        today = datetime.datetime.now()
         limit = today - datetime.timedelta(days=1)
         count = Post.objects.filter(author=post.author, creation_time__gte=limit).count()
         if count >= 3:
