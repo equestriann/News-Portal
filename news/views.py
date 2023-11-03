@@ -13,6 +13,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post, Category
 from .filters import PostFilter
 from .forms import PostForm
+from .tasks import sendmail_once_postcreated
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
@@ -63,16 +64,16 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     permission_required = ('news.create_post')
 
-    def form_valid(self, form):
-        post = form.save(commit=False)
-        # form.instance.author = self.request.user.username
-        today = datetime.datetime.now()
-        limit = today - datetime.timedelta(days=1)
-        count = Post.objects.filter(author=post.author, creation_time__gte=limit).count()
-        if count >= 3:
-            return render(self.request, 'post_create_restrict.html')
-        post.save()
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     post = form.save(commit=False)
+    #     # form.instance.author = self.request.user.username
+    #     today = datetime.datetime.now()
+    #     limit = today - datetime.timedelta(days=1)
+    #     count = Post.objects.filter(author=post.author, creation_time__gte=limit).count()
+    #     if count >= 3:
+    #         return render(self.request, 'news_app/post_create_restrict.html')
+    #     post.save()
+    #     return super().form_valid(form)
 
 class PostUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     login_url = '/'
@@ -124,3 +125,8 @@ def subscribe(request, pk):
 
     message = "Теперь вы подписаны на категорию"
     return render(request, 'news_app/subscribe.html', {'category': category, 'message': message})
+
+class CheckEmailTask(View):
+    def check(self, request, ):
+        sendmail_once_postcreated.delay(2)
+        return HttpResponse('Must work...')

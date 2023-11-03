@@ -1,6 +1,14 @@
-from celery import shared_task
 import time
 import datetime
+
+from celery import shared_task
+from .models import Post, Category
+
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+
+from django.shortcuts import render
+
 
 @shared_task
 def weekly_mailing():
@@ -22,6 +30,37 @@ def weekly_mailing():
         body='',
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=subscibers
+    )
+
+    message.attach_alternative(html_content, 'text/html')
+    message.send()
+
+@shared_task
+def sendmail_once_postcreated(pk):
+    post = Post.objects.get(pk=pk)
+    categories = post.category.all()
+    subscribers_emails = []
+
+    for category in categories:
+        subscribers = category.subscribers.all()
+        for subscriber in subscribers:
+            subscribers_emails.append(subscriber.email)
+            subscriber_username = subscriber.username
+
+    html_content = render_to_string(
+        'post_email_create/html',
+        {
+            'username': subscriber_username,
+            'preview': post.preview(),
+            'link': settings.SITE_URL,
+        }
+    )
+
+    message = EmailMultiAlternatives(
+        subject='Новая публикация',
+        body='',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=subscribers_emails
     )
 
     message.attach_alternative(html_content, 'text/html')
