@@ -46,12 +46,11 @@ def sendmail_once_postcreated(pk):
         subscribers = category.subscribers.all()
         for subscriber in subscribers:
             subscribers_emails.append(subscriber.email)
-            subscriber_username = subscriber.username
 
     html_content = render_to_string(
         'post_email_create.html',
         {
-            'username': subscriber_username,
+            'username': subscriber.username,
             'preview': post.preview(),
             'link': f'{settings.SITE_URL}/news/{pk}',
         }

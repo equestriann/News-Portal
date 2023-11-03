@@ -19,5 +19,4 @@ urlpatterns = [
     path('delete/<int:pk>', PostDelete.as_view(), name='post_delete'),
     path('category/<int:pk>', CategoryList.as_view(), name='category_list'),
     path('category/<int:pk>/subscribe', subscribe, name='subscribe'),
-    path('check/', CheckEmailTask.as_view())
 ]

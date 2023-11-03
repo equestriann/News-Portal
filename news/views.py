@@ -1,6 +1,5 @@
 import datetime
 
-# from datetime import datetime
 from typing import Dict, Any
 
 from django.core.paginator import Paginator
@@ -125,8 +124,3 @@ def subscribe(request, pk):
 
     message = "Теперь вы подписаны на категорию"
     return render(request, 'news_app/subscribe.html', {'category': category, 'message': message})
-
-class CheckEmailTask(View):
-    def check(self, request, ):
-        sendmail_once_postcreated.delay(2)
-        return HttpResponse('Must work...')
