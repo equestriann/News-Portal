@@ -53,7 +53,7 @@ def sendmail_once_postcreated(pk):
         {
             'username': subscriber_username,
             'preview': post.preview(),
-            'link': settings.SITE_URL,
+            'link': f'{settings.SITE_URL}/news/{pk}',
         }
     )
 
