@@ -47,5 +47,5 @@ from .tasks import sendmail_once_postcreated
 @receiver(m2m_changed, sender=PostCategory)
 def notify_about_new_posts(sender, instance, **kwargs):
     if kwargs['action'] == 'post_add':
-        pk = instance.pk
-        sendmail_once_postcreated.delay(2)
+        # pk = instance.pk
+        sendmail_once_postcreated.apply_async([instance.pk], countdown = 1)

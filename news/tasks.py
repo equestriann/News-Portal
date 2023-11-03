@@ -9,6 +9,7 @@ from django.core.mail import EmailMultiAlternatives
 
 from django.shortcuts import render
 
+from NewsPaper import settings
 
 @shared_task
 def weekly_mailing():
@@ -48,7 +49,7 @@ def sendmail_once_postcreated(pk):
             subscriber_username = subscriber.username
 
     html_content = render_to_string(
-        'post_email_create/html',
+        'post_email_create.html',
         {
             'username': subscriber_username,
             'preview': post.preview(),
