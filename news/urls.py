@@ -7,8 +7,7 @@ from .views import (PostList,
                     PostUpdate,
                     PostDelete,
                     CategoryList,
-                    subscribe,
-                    CheckEmailTask)
+                    subscribe)
 
 urlpatterns = [
     path('', PostList.as_view()),
